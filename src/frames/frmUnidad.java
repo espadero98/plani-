@@ -1,0 +1,590 @@
+
+package frames;
+
+import clases.Asignatura;
+import clases.ControladorAsignatura;
+import clases.ControladorSubUnidad;
+import clases.ControladorUnidad;
+import clases.ErrorPlanificacion;
+import clases.Unidad;
+import clases.imgTabla;
+import java.awt.Desktop;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
+public class frmUnidad extends javax.swing.JFrame {
+
+    private DefaultTableModel modeloUnidad;
+    private DefaultComboBoxModel modeloUnidadCombo;
+    
+    
+    /**
+     * Creates new form frmAsignatura
+     */
+    private String ruta_archivo="";
+    private String nombrePdfAnterior="";
+    public frmUnidad() {
+        initComponents();
+        rellenoTabla();
+        frmModificar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+        this.frmModificar.setLocationRelativeTo(null);
+        
+    }
+    
+    
+    public void seleccionar_pdf() {
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("pdf", "pdf");
+        chooser.setFileFilter(filter);
+        int se = chooser.showOpenDialog(this);
+        if (se == 0) {
+            
+            this.txtNombrePdf.setText("" + chooser.getSelectedFile().getName());
+            ruta_archivo = chooser.getSelectedFile().getAbsolutePath();
+
+        } else {
+        }
+    }
+    
+    //---------------------creacion de combo--------------------------------
+    public void rellenoCombo(){
+         cmbUnidad.removeAll();
+         modeloUnidadCombo=new DefaultComboBoxModel();
+        modeloUnidadCombo.removeAllElements();
+        Object[] opcion=new Object[6];
+            ArrayList<Unidad> uni=new ArrayList<>();
+        try {
+            uni = ControladorUnidad.Buscar();
+        } catch (ErrorPlanificacion ex) {
+            Logger.getLogger(frmUnidadAgregar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            Iterator iterador=uni.iterator();
+            
+            while(iterador.hasNext()){
+                
+                opcion[0]=iterador.next();
+                
+                modeloUnidadCombo.addElement(iterador.next());
+                opcion[1]=iterador.next();
+                opcion[2]=iterador.next();
+                opcion[3]=iterador.next();
+                opcion[4]=iterador.next();
+                opcion[5]=iterador.next();
+                
+            }
+            
+            cmbUnidad.setModel(modeloUnidadCombo);
+        
+     }  
+    
+    //---------------------creacion de tabla--------------------------------
+    public void rellenoTabla(){
+        String[] encabezadosTabla={"Código","Nombre","Número de Unidad","Descripción","Asignatura","Nombre Pdf","pdfUnidad"};
+        modeloUnidad=new DefaultTableModel();
+        tblUnidad.setDefaultRenderer(Object.class,new imgTabla() );
+        tblUnidad.setRowHeight(30);
+        ArrayList<Unidad> unidades = new ArrayList();
+        Object[] fila = new Object[7];
+        
+        try {
+            unidades = ControladorUnidad.Buscar();
+            modeloUnidad.setColumnIdentifiers(encabezadosTabla);
+            Iterator<Unidad> asig = unidades.iterator();
+        
+            while (asig.hasNext()) {
+                    
+                    fila[0] = asig.next();
+                    fila[1] = asig.next();
+                    fila[2] = asig.next();
+                    fila[3] = asig.next();
+                    fila[4] = asig.next();
+                    fila[5] = asig.next();
+                    
+                    //me muestra icono si hay un pdf guardado
+                    if (asig.next() != null) {
+                        fila[6] = new JLabel(new ImageIcon("src/iconos/32pdf.png"));
+                    }else{
+                        fila[6] = new JLabel("Vacio");
+                    }
+                    
+                    
+                    modeloUnidad.addRow(fila);
+                    tblUnidad.setModel(modeloUnidad);
+                }
+            
+        } catch (ErrorPlanificacion ex) {
+            Logger.getLogger(frmUnidad.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+     }   
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        frmModificar = new javax.swing.JFrame();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lblAgregar1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtNumeroUnidad = new javax.swing.JTextField();
+        txtDescripcion = new javax.swing.JTextField();
+        txtCodigo = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        lblCancelar = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        txtNombrePdf = new javax.swing.JTextField();
+        btnPdf = new javax.swing.JButton();
+        cmbUnidad = new javax.swing.JComboBox<>();
+        lblAgregar = new javax.swing.JLabel();
+        lblModificar = new javax.swing.JLabel();
+        lblAtras = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        lblEliminar = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblUnidad = new javax.swing.JTable();
+
+        frmModificar.setMinimumSize(new java.awt.Dimension(600, 600));
+        frmModificar.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setText("Nombre:");
+        frmModificar.getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, -1, -1));
+
+        jLabel2.setText("Número de Unidad:");
+        frmModificar.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, -1, -1));
+
+        jLabel3.setText("Descripción:");
+        frmModificar.getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, -1, -1));
+
+        lblAgregar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/edit.png"))); // NOI18N
+        lblAgregar1.setText("Modificar");
+        lblAgregar1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregar1MouseClicked(evt);
+            }
+        });
+        frmModificar.getContentPane().add(lblAgregar1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, -1));
+
+        jLabel7.setText("Modificar Unidad");
+        frmModificar.getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
+
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+        frmModificar.getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 180, -1));
+
+        txtNumeroUnidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNumeroUnidadKeyTyped(evt);
+            }
+        });
+        frmModificar.getContentPane().add(txtNumeroUnidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 180, -1));
+
+        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionKeyTyped(evt);
+            }
+        });
+        frmModificar.getContentPane().add(txtDescripcion, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 180, -1));
+        frmModificar.getContentPane().add(txtCodigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 50, 90, -1));
+
+        jLabel8.setText("Código:");
+        frmModificar.getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 30, -1, -1));
+
+        lblCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/cancelar.png"))); // NOI18N
+        lblCancelar.setText("Cancelar");
+        lblCancelar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCancelarMouseClicked(evt);
+            }
+        });
+        frmModificar.getContentPane().add(lblCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, -1, -1));
+
+        jLabel10.setText("Asignatura:");
+        frmModificar.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180, -1, -1));
+
+        jLabel11.setText("Nombre pdf:");
+        frmModificar.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, -1, -1));
+        frmModificar.getContentPane().add(txtNombrePdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 210, 180, -1));
+
+        btnPdf.setText("Buscar Pdf");
+        btnPdf.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPdfActionPerformed(evt);
+            }
+        });
+        frmModificar.getContentPane().add(btnPdf, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, 180, -1));
+
+        cmbUnidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        frmModificar.getContentPane().add(cmbUnidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 180, -1));
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/add.png"))); // NOI18N
+        lblAgregar.setText("agregar");
+        lblAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAgregarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 30, -1, -1));
+
+        lblModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/modificar.png"))); // NOI18N
+        lblModificar.setText("modificar");
+        lblModificar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblModificar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblModificarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblModificar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 30, -1, -1));
+
+        lblAtras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/back.png"))); // NOI18N
+        lblAtras.setText("atras");
+        lblAtras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblAtras.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAtrasMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblAtras, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+
+        jLabel4.setText("UNIDADES");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, -1, -1));
+
+        lblEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/delete.png"))); // NOI18N
+        lblEliminar.setText("eliminar");
+        lblEliminar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblEliminar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblEliminarMouseClicked(evt);
+            }
+        });
+        getContentPane().add(lblEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 30, -1, -1));
+
+        tblUnidad=new javax.swing.JTable(){
+            public boolean isCellEditable(int rowIndex,int colIndex){
+                return false;
+            }
+        };
+        tblUnidad.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Código", "Nombre", "Número de Unidad", "Descripción", "Asignatura", "Archivo Pdf"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblUnidad.getTableHeader().setResizingAllowed(false);
+        tblUnidad.getTableHeader().setReorderingAllowed(false);
+        tblUnidad.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblUnidadMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblUnidad);
+        if (tblUnidad.getColumnModel().getColumnCount() > 0) {
+            tblUnidad.getColumnModel().getColumn(0).setResizable(false);
+            tblUnidad.getColumnModel().getColumn(1).setResizable(false);
+            tblUnidad.getColumnModel().getColumn(2).setResizable(false);
+            tblUnidad.getColumnModel().getColumn(3).setResizable(false);
+            tblUnidad.getColumnModel().getColumn(4).setResizable(false);
+            tblUnidad.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 180, 700, 270));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void lblAgregarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregarMouseClicked
+       frmUnidadAgregar add=new frmUnidadAgregar();
+        add.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_lblAgregarMouseClicked
+
+    private void lblModificarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblModificarMouseClicked
+        if(tblUnidad.getSelectedRow()!=-1){
+            int seleccion; 
+            frmModificar.setVisible(true);
+            this.setVisible(false);
+            
+            seleccion = tblUnidad.getSelectedRow();
+            txtCodigo.setText(tblUnidad.getValueAt(seleccion, 0).toString());
+            txtNombre.setText((tblUnidad.getValueAt(seleccion, 1).toString()));
+            txtNumeroUnidad.setText((tblUnidad.getValueAt(seleccion, 2).toString()));
+            txtDescripcion.setText((tblUnidad.getValueAt(seleccion, 3).toString()));
+            
+            txtNombrePdf.setText(tblUnidad.getValueAt(seleccion, 5).toString());
+            nombrePdfAnterior=tblUnidad.getValueAt(seleccion, 5).toString();
+            rellenoCombo();
+//            llenandoTxtPeli();
+//            
+//            rellenoTablaActor();
+//            rellenoTablaDirectores();
+//            rellenoTablaGenero();
+//            rellenoComboClasifiacion();
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione una fila de la tabla");
+        }
+    }//GEN-LAST:event_lblModificarMouseClicked
+
+    private void lblEliminarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblEliminarMouseClicked
+        Unidad uni=new Unidad();
+        if(tblUnidad.getSelectedRow()!=-1){
+            try {
+                int seleccion;
+                seleccion = tblUnidad.getSelectedRow();
+                uni.setIdUnidad(tblUnidad.getValueAt(seleccion, 0).toString());
+                ControladorUnidad.Eliminar(uni);
+                JOptionPane.showMessageDialog(null, "La eliminacion fue correcta");
+                modeloUnidad.removeRow(tblUnidad.getSelectedRow());
+            } catch (ErrorPlanificacion ex) {
+                JOptionPane.showMessageDialog(null, "Elija una fila de la tabla");
+            }
+        }
+    }//GEN-LAST:event_lblEliminarMouseClicked
+
+    private void lblCancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCancelarMouseClicked
+        frmModificar.setVisible(false);
+        this.setVisible(true);
+    }//GEN-LAST:event_lblCancelarMouseClicked
+
+    private void lblAgregar1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAgregar1MouseClicked
+        String codigo=txtCodigo.getText();
+        String nombre=txtNombre.getText();
+        String numeroUnidad=txtNumeroUnidad.getText();
+        String descripcion=txtDescripcion.getText();
+        String asignatura=cmbUnidad.getSelectedItem().toString();
+        String pdfUnidad=txtNombrePdf.getText();
+
+        if (codigo.isEmpty() && asignatura.isEmpty() && numeroUnidad.isEmpty() && descripcion.isEmpty() && asignatura.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Rellene todos los campos por favor");
+        }else{
+            try {
+                Unidad uni=new Unidad();
+                
+                uni.setIdUnidad(codigo);
+                uni.setNombre(asignatura);
+                uni.setNumeroUnidad(Integer.parseInt(numeroUnidad));
+                uni.setDescripcion(descripcion);
+                String idAsignatura=ControladorUnidad.Obtener(asignatura);
+                uni.setIdAsignatura(idAsignatura);  //Hacer una intermedia para el codigo
+                uni.setNombrePdf(pdfUnidad);
+                
+                if (pdfUnidad.equals(nombrePdfAnterior)) {
+                    byte[] mipdf=ControladorUnidad.obtenerPdf(codigo);
+                    uni.setPdfUnidad(mipdf);
+                }else{
+                    //Conviertiendo a bytes el pdf
+                    byte[] pdf = new byte[(int) ruta_archivo.length()];
+                    InputStream input = new FileInputStream(ruta_archivo);
+                    input.read(pdf);
+                    uni.setPdfUnidad(pdf);
+                }
+                ControladorUnidad.Modificar(uni);
+                JOptionPane.showMessageDialog(null, "Se modifico exitosamente!!");
+            } catch (ErrorPlanificacion ex) {
+                Logger.getLogger(frmUnidad.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(frmUnidad.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(frmUnidad.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_lblAgregar1MouseClicked
+
+    private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
+        seleccionar_pdf();
+    }//GEN-LAST:event_btnPdfActionPerformed
+
+    private void lblAtrasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAtrasMouseClicked
+        frmMenu mostrar=new frmMenu();
+        mostrar.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_lblAtrasMouseClicked
+
+    private void tblUnidadMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblUnidadMouseClicked
+         int column = tblUnidad.getColumnModel().getColumnIndexAtX(evt.getX());
+        int row = evt.getY() / tblUnidad.getRowHeight();
+        
+        
+        if (row < tblUnidad.getRowCount() && row >= 0 && column < tblUnidad.getColumnCount() && column >= 0) {
+            String id = tblUnidad.getValueAt(row, 0).toString();
+            Object value = tblUnidad.getValueAt(row, column);
+            if (value instanceof JLabel) {
+//                ((JButton) value).doClick();
+//                JButton boton = (JButton) value;
+
+//                if (boton.getText().equals("Vacio")) {
+//                    JOptionPane.showMessageDialog(null, "No hay archivo");
+//                } else {
+                    ControladorUnidad pd = new ControladorUnidad();
+                    pd.ejecutar_archivoPDF(id);
+                    try {
+                        Desktop.getDesktop().open(new File("new.pdf"));
+                    } catch (Exception ex) {
+                    }
+//                }
+
+            } else {
+                String name = "" + tblUnidad.getValueAt(row, 1);
+                
+            }
+        }
+    }//GEN-LAST:event_tblUnidadMouseClicked
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+         int c=(int) evt.getKeyChar();
+        char mayu=evt.getKeyChar();
+
+        if ((c>=65 && c<=90) || (c>=97 && c<=122)  || (c==32) || (c==8) || (c >=48 && c<=57) || (c== (char)KeyEvent.VK_BACK_SPACE) || (c== (char)KeyEvent.VK_ENTER)) {
+            if (Character.isLowerCase(mayu)) {
+                String cadena=(""+mayu).toUpperCase();
+                mayu=cadena.charAt(0);
+                evt.setKeyChar(mayu);
+            }
+        }else{
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
+         int c=(int) evt.getKeyChar();
+        char mayu=evt.getKeyChar();
+
+        if ((c>=65 && c<=90) || (c>=97 && c<=122)  || (c==32) || (c==8) || (c >=48 && c<=57) || (c== (char)KeyEvent.VK_BACK_SPACE) || (c== (char)KeyEvent.VK_ENTER)) {
+            if (Character.isLowerCase(mayu)) {
+                String cadena=(""+mayu).toUpperCase();
+                mayu=cadena.charAt(0);
+                evt.setKeyChar(mayu);
+            }
+        }else{
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDescripcionKeyTyped
+
+    private void txtNumeroUnidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroUnidadKeyTyped
+        int c=(int) evt.getKeyChar();
+
+        if ((c >=48 && c<=57) || (c==8) || (c== (char)KeyEvent.VK_BACK_SPACE) || (c== (char)KeyEvent.VK_ENTER)) {
+            //No pasa nada
+        }else{
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
+            getToolkit().beep();
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNumeroUnidadKeyTyped
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(frmUnidad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(frmUnidad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(frmUnidad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(frmUnidad.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new frmUnidad().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnPdf;
+    private javax.swing.JComboBox<String> cmbUnidad;
+    private javax.swing.JFrame frmModificar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAgregar;
+    private javax.swing.JLabel lblAgregar1;
+    private javax.swing.JLabel lblAtras;
+    private javax.swing.JLabel lblCancelar;
+    private javax.swing.JLabel lblEliminar;
+    private javax.swing.JLabel lblModificar;
+    private javax.swing.JTable tblUnidad;
+    private javax.swing.JTextField txtCodigo;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtNombrePdf;
+    private javax.swing.JTextField txtNumeroUnidad;
+    // End of variables declaration//GEN-END:variables
+}
